@@ -18,8 +18,17 @@
 
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
+
+   (lecture notes)
+   allMyData = {
+   policeData: null,
+   bikeData: null
+ }
+   $.ajax("http://policedata.com").done(function(data){allmyData.policeData = data})
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) {
+  return str.length>=5;
+};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,15 +39,20 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {
+    console.log(num *2)
+};
 var theArray = [1, 5, 20, 100];
+
+
+  _.each(theArray, logDouble);
 
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3,5,15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -104,12 +118,30 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   that this step is completed before moving on!
 ===================== */
 
+var glob;
+
+var mapped = function(dot) {
+  L.marker([dot.LAT, dot.LNG]).addTo(map);
+};
+
+$.ajax(phillyBikeCrashesDataUrl).done(function(phillyBikeCrashesData) {
+  // a function that does some kind of transformation on the response
+  glob = JSON.parse(phillyBikeCrashesData);
+  _.each(glob,mapped);
+
+  // Logging our computed result (within the body of the ajax function)
+//  console.log();
+});
+
+
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
-
+// var mapped = function()
+// );
+//   };
 
 /* =====================
  Leaflet setup - feel free to ignore this

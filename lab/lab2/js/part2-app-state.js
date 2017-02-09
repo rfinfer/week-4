@@ -11,6 +11,33 @@
   make it into markers, and plot it. You'll know you've succeeded when you can
   see markers on the map.
 
+  var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
+
+
+    // Logging our computed result (within the body of the ajax function)
+  //  console.log();
+});/*
+
+*/
+// var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
+//
+// var glob;
+//
+// var makeMarker = function(dot) {
+//   return L.marker([dot.LAT, dot.LNG]);
+// };
+//
+// var plotMarker = function(marker){
+//   marker.addTo(map);
+// };
+//
+// $.ajax(phillyBikeCrashesDataUrl).done(function(phillyBikeCrashesData) {
+//   // a function that does some kind of transformation on the response
+//   glob = JSON.parse(phillyBikeCrashesData);
+//   var markers = _.map(glob,makeMarker);
+//   _.each(markers,mapped2);
+// });
+/*
   NOTE 1: When we have added markers to the map in the past, we have used a line like:
 
        L.marker([50.5, 30.5]).addTo(map);
@@ -33,10 +60,23 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json");
+var parseData = function(data) {
+  return  JSON.parse(data);
+};
+
+
+var makeMarkers = function(crashDataArray) {
+    return _.map(crashDataArray, function(crashDataPoint){
+      return L.marker([crashDataPoint.LAT,crashDataPoint.LNG]);
+    });
+};
+
+var plotMarkers = function(markers) {
+   _.map(markers, function(myMarker){
+     myMarker.addTo(map);
+  });
+};
 
 
 /* =====================
@@ -52,7 +92,12 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(mapMarkers) {
+  _.each(mapMarkers, function(marker){
+    map.removeLayer(marker);
+  });
+};
+
 
 /* =====================
   Optional, stretch goal
@@ -84,7 +129,9 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 
 downloadData.done(function(data) {
   var parsed = parseData(data);
-  var markers = makeMarkers(parsed);
-  plotMarkers(markers);
-  removeMarkers(markers);
+
+ var markers = makeMarkers(parsed);
+
+ plotMarkers(markers);
+ removeMarkers(markers);
 });
